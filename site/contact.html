@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Заявка — Polka</title>
+<meta name="description" content="Polka — учебная витрина проекта Traffic Quality Lab. Данные и трафик синтетические.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/config.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html">Polka</a>
+    <nav class="nav">
+      <a href="index.html#catalog">Каталог</a>
+      <a href="index.html#about">О нас</a>
+      <a href="contact.html">Заявка</a>
+      <a data-phone="header" data-phone-text href="#"></a>
+    </nav>
+    <a class="cart-link" href="cart.html">Корзина<span data-cart-count>0</span></a>
+  </div>
+</header>
+<main>
+
+<section class="wrap">
+  <div class="panel">
+    <p class="eyebrow">Обратная связь</p>
+    <h1>Оставить заявку</h1>
+    <p class="muted">Форма учебная: данные никуда не отправляются, в dataLayer уходит только событие form_submit.</p>
+    <form data-lead-form>
+      <div class="field"><label for="name">Имя</label><input id="name" name="name" autocomplete="off" required></div>
+      <div class="field"><label for="contact">Телефон или почта</label><input id="contact" name="contact" autocomplete="off" required></div>
+      <div class="field"><label for="msg">Комментарий</label><textarea id="msg" name="msg" rows="3"></textarea></div>
+      <button class="btn" type="submit">Отправить</button>
+      <p class="ok" data-form-ok hidden>Спасибо! Заявка принята.</p>
+    </form>
+  </div>
+</section>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>Polka · учебная витрина Traffic Quality Lab. Магазин ненастоящий, заказы не принимаются.</span>
+    <a data-phone="footer" data-phone-text href="#"></a>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

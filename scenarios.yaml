@@ -1,0 +1,71 @@
+# Параметры синтетической кампании и вшитые аномалии.
+# Меняешь сценарий здесь — симулятор пересобирает CSV и ground_truth.json.
+
+seed: 42
+campaign: autumn_sale
+start: 2026-09-01
+end: 2026-09-30
+
+# Базовые параметры поведения трафика
+baseline:
+  weekend_factor: 0.8          # в выходные кликов меньше
+  verifier_gap: [0.01, 0.05]   # Верификатор видит на 1–5% кликов меньше, чем DSP
+  givt_rate: 0.02              # доля GIVT в кликах Верификатора
+  sivt_rate: 0.01              # доля SIVT
+  add_to_cart_rate: 0.08       # доля визитов с целью «корзина»
+  form_submit_rate: 0.02       # доля визитов с отправкой формы
+
+ssps:
+  ssp_a:
+    reach: 0.78                # доходимость: чистые клики Верификатора → визиты
+    placements:
+      news_portal: 220
+      weather_app: 150
+  ssp_b:
+    reach: 0.72
+    placements:
+      game_hub: 180
+      video_site: 200
+  ssp_c:
+    reach: 0.65
+    placements:
+      mobile_feed: 260
+
+anomalies:
+  - id: reach_drop_ssp_b
+    type: reach_drop
+    ssp: ssp_b
+    start: 2026-09-12
+    end: 2026-09-14
+    factor: 0.35               # доходимость падает до 35% от нормы
+
+  - id: high_givt_mobile_feed
+    type: high_givt
+    placement: mobile_feed
+    start: 2026-09-20
+    end: 2026-09-24
+    givt_rate: 0.22
+
+  - id: goal_spike_weather_app
+    type: goal_spike
+    placement: weather_app
+    goal: form_submit
+    date: 2026-09-17
+    extra: 160                 # отправок формы больше, чем визитов
+
+  - id: dsp_duplicates
+    type: duplicates
+    file: dsp_clicks
+    rows: 6
+
+  - id: verifier_missing_date
+    type: missing_date
+    file: verifier_export
+    date: 2026-09-08
+
+  - id: utm_noise_ssp_a
+    type: utm_noise
+    ssp: ssp_a
+    start: 2026-09-05
+    end: 2026-09-11
+    variants: ["SSP_A", "ssp_a ", "ssp-a", "ssp_a?ref=feed"]
