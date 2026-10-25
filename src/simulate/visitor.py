@@ -9,7 +9,7 @@
 отправляются повторно в тех же визитах — так выглядит двойное срабатывание тега.
 
 Запуск (масштаб 5% от плана, одна дата):
-  python -m src.simulate.visitor --site https://<user>.github.io/traffic-quality-lab/ --date 2026-09-12 --scale 0.05
+  python -m src.simulate.visitor --site https://yzinchenko-data.github.io/traffic-quality-lab/ --date 2026-09-12 --scale 0.05
 """
 
 from __future__ import annotations

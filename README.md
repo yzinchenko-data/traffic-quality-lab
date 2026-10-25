@@ -2,7 +2,7 @@
 
 ![python](https://img.shields.io/badge/python-3.11%2B-0F766E)
 ![sql](https://img.shields.io/badge/SQL-DuckDB-2563EB)
-![tests](https://img.shields.io/badge/tests-28%20passed-0F766E)
+[![CI](https://github.com/yzinchenko-data/traffic-quality-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/yzinchenko-data/traffic-quality-lab/actions/workflows/ci.yml)
 ![data](https://img.shields.io/badge/data-100%25%20synthetic-D97706)
 
 Синтетический стенд для анализа качества рекламного трафика: **DSP → Верификатор → Метрика → отчёт**.
@@ -48,7 +48,7 @@ flowchart LR
 ## Быстрый старт
 
 ```bash
-git clone https://github.com/<user>/traffic-quality-lab.git
+git clone https://github.com/yzinchenko-data/traffic-quality-lab.git
 cd traffic-quality-lab
 pip install -r requirements-dev.txt
 make report   # симуляция → эмулятор Метрики → анализ → отчёт

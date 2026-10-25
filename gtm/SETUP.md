@@ -4,7 +4,7 @@
 
 ## 1. Счётчик Метрики
 
-1. Создай счётчик на адрес витрины (`https://<user>.github.io/traffic-quality-lab/`).
+1. Создай счётчик на адрес витрины (`https://yzinchenko-data.github.io/traffic-quality-lab/`).
 2. Включи Вебвизор.
 3. Создай JavaScript-цели с идентификаторами `add_to_cart`, `form_submit`, `scroll_50`, `click_phone`.
 4. Номера целей `add_to_cart` и `form_submit` впиши в `.env` (`METRIKA_GOAL_ADD_TO_CART`, `METRIKA_GOAL_FORM_SUBMIT`).
