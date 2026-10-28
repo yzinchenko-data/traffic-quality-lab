@@ -8,7 +8,14 @@ The site, GTM events, visits and the DSP and verifier exports are all generated,
 
 **Links:** [case study (RU)](docs/case.md) · [DataLens dashboard](https://datalens.yandex/5eh8tse706g0o) · [Google Sheets report](https://docs.google.com/spreadsheets/d/1NhA2LwWcmlN6AD9Vxc3NhOupJ8nuMSW8UQ5RWQbEGQM/edit) · [live demo site](https://yzinchenko-data.github.io/traffic-quality-lab/)
 
-![Reach by SSP](docs/img/reach.png)
+[![DataLens dashboard](docs/img/datalens_dashboard.png)](https://datalens.yandex/5eh8tse706g0o)
+
+<table>
+<tr>
+<td width="50%"><img src="docs/img/reach.png" alt="Reach by SSP"><br><sub>Reach by SSP, flagged days marked</sub></td>
+<td width="50%"><img src="docs/img/givt.png" alt="GIVT share"><br><sub>GIVT share by placement</sub></td>
+</tr>
+</table>
 
 ## What it shows
 
@@ -26,6 +33,8 @@ make report   # simulate → emulate Metrika → analyze → report
 make test
 make app      # Streamlit: tune the z threshold and anomaly strength
 ```
+
+![Streamlit demo](docs/img/streamlit_app.png)
 
 No keys are needed in offline mode. For live mode (a real Metrika counter and a Playwright bot visiting the site), see the Russian README.
 

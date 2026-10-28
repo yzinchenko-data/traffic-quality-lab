@@ -4,6 +4,9 @@
 ![sql](https://img.shields.io/badge/SQL-DuckDB-2563EB)
 [![CI](https://github.com/yzinchenko-data/traffic-quality-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/yzinchenko-data/traffic-quality-lab/actions/workflows/ci.yml)
 ![data](https://img.shields.io/badge/data-100%25%20synthetic-D97706)
+[![DataLens](https://img.shields.io/badge/дашборд-DataLens-FFCC00)](https://datalens.yandex/5eh8tse706g0o)
+[![Sheets](https://img.shields.io/badge/отчёт-Google%20Sheets-34A853)](https://docs.google.com/spreadsheets/d/1NhA2LwWcmlN6AD9Vxc3NhOupJ8nuMSW8UQ5RWQbEGQM/edit)
+[![Streamlit](https://img.shields.io/badge/демо-Streamlit-FF4B4B)](app/streamlit_app.py)
 
 [English version](README.en.md) · [Кейс: разбор задачи](docs/case.md)
 
@@ -11,9 +14,9 @@
 
 Сайт, GTM-события, визиты и выгрузки DSP и Верификатора генерируются, а в данные заранее вшиты аномалии. Пайплайн чистит данные, считает доходимость и долю GIVT, ищет аномалии во временных рядах и собирает отчёт с подсветкой. Каждая метрика посчитана дважды, в pandas и в SQL. Тесты проверяют, что оба расчёта совпадают и что найдено ровно то, что было вшито.
 
-![Доходимость по SSP](docs/img/reach.png)
+[![Дашборд DataLens](docs/img/datalens_dashboard.png)](https://datalens.yandex/5eh8tse706g0o)
 
-![Воронка](docs/img/funnel.png)
+<sub>Дашборд в DataLens: провал доходимости ssp_b 12–14.09, ровное расхождение DSP и Верификатора, рост GIVT на mobile_feed 20–24.09. Картинка кликабельна.</sub>
 
 ## Что внутри
 
@@ -77,9 +80,20 @@ make app      # Streamlit: порог robust z и сила аномалий на
 | `missing_date` | В выгрузке Верификатора нет 08.09 | Дата найдена; расхождение и доходимость считаются только по дням, которые есть в обеих выгрузках |
 | `utm_noise` | `SSP_A`, `ssp-a`, `ssp_a?ref=feed` | Приведены к `ssp_a` |
 
-![Доля GIVT по площадкам](docs/img/givt.png)
+### Графики отчёта
 
-![Расхождение DSP и Верификатора](docs/img/dsp_vs_verifier.png)
+Пайплайн рисует их сам (matplotlib) и кладёт в `docs/img/`.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/img/reach.png" alt="Доходимость по SSP"><br><sub>Доходимость от Верификатора по SSP, аномальные дни отмечены</sub></td>
+<td width="50%"><img src="docs/img/givt.png" alt="Доля GIVT по площадкам"><br><sub>Доля GIVT по площадкам</sub></td>
+</tr>
+<tr>
+<td width="50%"><img src="docs/img/dsp_vs_verifier.png" alt="Расхождение DSP и Верификатора"><br><sub>Расхождение DSP и Верификатора по дням, %</sub></td>
+<td width="50%"><img src="docs/img/funnel.png" alt="Воронка"><br><sub>Воронка: клики DSP → Верификатор → визиты → цели</sub></td>
+</tr>
+</table>
 
 ## Отчёт в Google Sheets
 
@@ -98,6 +112,8 @@ Workflow [`refresh.yml`](.github/workflows/refresh.yml) запускается �
 ## Демо на Streamlit
 
 `make app` открывает [`app/streamlit_app.py`](app/streamlit_app.py): ползунками меняются порог robust z, глубина провала доходимости и доля GIVT, а графики и найденные периоды пересчитываются сразу. Видно, где детектор начинает пропускать аномалии и где ловит лишние дни.
+
+![Демо на Streamlit](docs/img/streamlit_app.png)
 
 ## Живой сайт и счётчик
 
