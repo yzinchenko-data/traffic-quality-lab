@@ -78,6 +78,12 @@ make test     # 28 тестов
 
 ![Расхождение DSP и Верификатора](docs/img/dsp_vs_verifier.png)
 
+## Отчёт в Google Sheets
+
+[Traffic Quality Lab — отчёт](https://docs.google.com/spreadsheets/d/1NhA2LwWcmlN6AD9Vxc3NhOupJ8nuMSW8UQ5RWQbEGQM/edit): сводка по SSP, доходимость и GIVT по дням с подсветкой аномалий, периоды аномалий, отчёт о чистке и лист с живыми визитами из Метрики.
+
+Таблицу собирает [`apps_script/report_builder.gs`](apps_script/report_builder.gs), ключи сервисного аккаунта не нужны. Пайплайн кладёт CSV в [`exports/sheets/`](exports/sheets/), скрипт забирает их из репозитория и каждый раз оформляет одинаково: русские заголовки, доли в процентах, красная строка у аномальных дней, градиент по доходимости и GIVT. В таблице появляется меню **Traffic Quality Lab** с пунктами «Обновить отчёт», «Выгрузить Метрику» и «Обновлять каждый день». Колонки задаёт [`src/report/sheet_tables.py`](src/report/sheet_tables.py), его же использует выгрузка `--sheets` через gspread.
+
 ## Дашборд DataLens
 
 [Traffic Quality Lab — качество трафика](https://datalens.yandex/5eh8tse706g0o): доходимость от Верификатора по SSP, расхождение DSP и Верификатора по дням, доля GIVT по площадкам. Источник — CSV из папки [`datalens/`](datalens/), их выгружает пайплайн.

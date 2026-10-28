@@ -102,7 +102,7 @@ def run(config: Path, raw_dir: Path, out_dir: Path, source: str = "offline", she
     res = analyze(raw_dir, cfg, truth)
 
     # Импорты отчётов здесь, чтобы анализ работал и без matplotlib / openpyxl
-    from src.report import charts, excel, findings
+    from src.report import charts, excel, findings, sheet_tables
 
     img_dir = ROOT / "docs" / "img"
     charts.render_all(res, img_dir)
@@ -112,6 +112,8 @@ def run(config: Path, raw_dir: Path, out_dir: Path, source: str = "offline", she
         json.dumps(res.windows.astype(str).to_dict(orient="records"), ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
+    # CSV для Apps Script: лист собирается из них в Google Sheets без ключей сервисного аккаунта
+    sheet_tables.write_csv(res, ROOT / "exports" / "sheets")
     if sheets:
         from src.report import sheets as gsheets
 

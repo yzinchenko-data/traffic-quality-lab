@@ -13,6 +13,8 @@ import gspread
 import pandas as pd
 from dotenv import load_dotenv
 
+from src.report import sheet_tables
+
 RED = {"red": 0.99, "green": 0.89, "blue": 0.88}
 GREEN = {"red": 0.39, "green": 0.75, "blue": 0.48}
 YELLOW = {"red": 1.0, "green": 0.92, "blue": 0.52}
@@ -104,21 +106,17 @@ def write(res) -> str:
     gc = gspread.service_account(filename=os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"])
     sh = gc.open_by_key(os.environ["GOOGLE_SHEET_ID"])
 
-    _upsert(sh, "Сводка", res.summary)
-    daily = res.daily_ssp.merge(res.reach_flags[["date", "ssp", "z", "flag"]], on=["date", "ssp"])
-    ws_daily = _upsert(sh, "По дням SSP", daily)
-    givt = res.daily_placement.merge(res.givt_flags[["date", "placement", "z", "flag"]], on=["date", "placement"])
-    ws_givt = _upsert(sh, "Площадки GIVT", givt)
-    _upsert(sh, "Аномалии", res.windows)
-    _upsert(sh, "Чистка", res.cleaning.to_frame())
+    tables = sheet_tables.build(res)
+    ws = {name: _upsert(sh, title, tables[name]) for name, title in sheet_tables.SHEETS.items()}
+    daily, givt = tables["daily_ssp"], tables["givt"]
 
     sh.batch_update(
         {
             "requests": [
-                _flag_rule(ws_daily, daily),
-                _scale_rule(ws_daily, daily, "reach_verifier"),
-                _flag_rule(ws_givt, givt),
-                _scale_rule(ws_givt, givt, "givt_share", reverse=True),
+                _flag_rule(ws["daily_ssp"], daily),
+                _scale_rule(ws["daily_ssp"], daily, "reach_verifier"),
+                _flag_rule(ws["givt"], givt),
+                _scale_rule(ws["givt"], givt, "givt_share", reverse=True),
             ]
         }
     )
