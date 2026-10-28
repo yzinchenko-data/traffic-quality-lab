@@ -90,7 +90,14 @@ def run(config: Path, raw_dir: Path, out_dir: Path, source: str = "offline", she
     else:
         from src.extract import metrika_api
 
-        metrika_api.fetch(str(cfg["start"]), str(cfg["end"])).to_csv(raw_dir / "metrika_visits.csv", index=False)
+        visits = metrika_api.fetch(str(cfg["start"]), str(cfg["end"]))
+        if visits.empty:
+            raise SystemExit(
+                f"Метрика вернула 0 визитов за {cfg['start']}–{cfg['end']}. "
+                "Бот пишет визиты на дату запуска, а не на дату из плана: "
+                "сдвинь start/end в scenarios.yaml или запусти без --source api."
+            )
+        visits.to_csv(raw_dir / "metrika_visits.csv", index=False)
 
     res = analyze(raw_dir, cfg, truth)
 
