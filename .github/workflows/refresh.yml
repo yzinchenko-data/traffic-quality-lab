@@ -1,10 +1,11 @@
 name: Daily refresh
 
-# Каждый день в 08:00 МСК пересобирает отчёт по календарю, сдвинутому ко вчерашнему дню,
-# и коммитит CSV для Google Sheets и DataLens. Apps Script в таблице забирает их отсюда.
+# Запуск вручную: Actions → Daily refresh → Run workflow. Пересобирает отчёт по календарю,
+# сдвинутому ко вчерашнему дню, и коммитит CSV для Google Sheets и DataLens.
+# Расписание выключено, чтобы не тратить минуты Actions; включается так:
+#   schedule:
+#     - cron: "0 5 * * *"   # 08:00 МСК
 on:
-  schedule:
-    - cron: "0 5 * * *"
   workflow_dispatch:
 
 permissions:

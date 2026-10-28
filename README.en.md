@@ -16,7 +16,7 @@ The site, GTM events, visits and the DSP and verifier exports are all generated,
 - **Metrics:** reach = visits / verifier clicks (incl. IVT), DSP vs verifier gap by day and for the period, GIVT/SIVT share, CR with Wilson intervals, chi-square across SSPs.
 - **Anomaly detection:** robust z-score (median/MAD, threshold 3.5), STL trend, consecutive flagged days merged into periods (gaps and islands in SQL).
 - **Testing:** pandas = SQL, plus a ground-truth check against the planted scenarios.
-- **Delivery:** Excel, Google Sheets built by Apps Script, a DataLens dashboard, a Streamlit app, and a daily GitHub Actions refresh.
+- **Delivery:** Excel, Google Sheets built by Apps Script, a DataLens dashboard, a Streamlit app, and an on-demand GitHub Actions refresh.
 
 ## Quick start
 
