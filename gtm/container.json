@@ -1,0 +1,334 @@
+{
+  "exportFormatVersion": 2,
+  "containerVersion": {
+    "accountId": "6376443650",
+    "containerId": "284042814",
+    "containerVersionId": "0",
+    "container": {
+      "accountId": "6376443650",
+      "containerId": "284042814",
+      "name": "traffic-quality-lab",
+      "publicId": "GTM-MJXVW5MB",
+      "usageContext": [
+        "WEB"
+      ]
+    },
+    "tag": [
+      {
+        "accountId": "6376443650",
+        "containerId": "284042814",
+        "tagId": "1",
+        "name": "Metrika - counter",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script type=\"text/javascript\">\n  (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};\n  m[i].l=1*new Date();\n  for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}\n  k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})\n  (window, document, \"script\", \"https://mc.yandex.ru/metrika/tag.js\", \"ym\");\n  ym({{CONST - Metrika ID}}, \"init\", {clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "firingTriggerId": [
+          "2147479553"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT"
+      },
+      {
+        "accountId": "6376443650",
+        "containerId": "284042814",
+        "tagId": "10",
+        "name": "Metrika - goal add_to_cart",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>ym({{CONST - Metrika ID}}, 'reachGoal', 'add_to_cart', {product: {{DLV - product_id}}, value: {{DLV - value}}});</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "firingTriggerId": [
+          "10"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "setupTag": [
+          {
+            "tagName": "Metrika - counter",
+            "stopOnSetupFailure": true
+          }
+        ]
+      },
+      {
+        "accountId": "6376443650",
+        "containerId": "284042814",
+        "tagId": "11",
+        "name": "Metrika - goal form_submit",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>ym({{CONST - Metrika ID}}, 'reachGoal', 'form_submit', {});</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "firingTriggerId": [
+          "11"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "setupTag": [
+          {
+            "tagName": "Metrika - counter",
+            "stopOnSetupFailure": true
+          }
+        ]
+      },
+      {
+        "accountId": "6376443650",
+        "containerId": "284042814",
+        "tagId": "12",
+        "name": "Metrika - goal scroll_50",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>ym({{CONST - Metrika ID}}, 'reachGoal', 'scroll_50', {});</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "firingTriggerId": [
+          "12"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "setupTag": [
+          {
+            "tagName": "Metrika - counter",
+            "stopOnSetupFailure": true
+          }
+        ]
+      },
+      {
+        "accountId": "6376443650",
+        "containerId": "284042814",
+        "tagId": "13",
+        "name": "Metrika - goal click_phone",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>ym({{CONST - Metrika ID}}, 'reachGoal', 'click_phone', {});</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "firingTriggerId": [
+          "13"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "setupTag": [
+          {
+            "tagName": "Metrika - counter",
+            "stopOnSetupFailure": true
+          }
+        ]
+      }
+    ],
+    "trigger": [
+      {
+        "accountId": "6376443650",
+        "containerId": "284042814",
+        "triggerId": "10",
+        "name": "CE - add_to_cart",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "add_to_cart"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accountId": "6376443650",
+        "containerId": "284042814",
+        "triggerId": "11",
+        "name": "CE - form_submit",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "form_submit"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accountId": "6376443650",
+        "containerId": "284042814",
+        "triggerId": "12",
+        "name": "CE - scroll_50",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "scroll_50"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accountId": "6376443650",
+        "containerId": "284042814",
+        "triggerId": "13",
+        "name": "CE - click_phone",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "click_phone"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "variable": [
+      {
+        "accountId": "6376443650",
+        "containerId": "284042814",
+        "variableId": "1",
+        "name": "CONST - Metrika ID",
+        "type": "c",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "value",
+            "value": "113842747"
+          }
+        ]
+      },
+      {
+        "accountId": "6376443650",
+        "containerId": "284042814",
+        "variableId": "2",
+        "name": "DLV - product_id",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "product_id"
+          }
+        ]
+      },
+      {
+        "accountId": "6376443650",
+        "containerId": "284042814",
+        "variableId": "3",
+        "name": "DLV - value",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "value"
+          }
+        ]
+      }
+    ],
+    "builtInVariable": [
+      {
+        "accountId": "6376443650",
+        "containerId": "284042814",
+        "type": "EVENT",
+        "name": "Event"
+      },
+      {
+        "accountId": "6376443650",
+        "containerId": "284042814",
+        "type": "PAGE_URL",
+        "name": "Page URL"
+      }
+    ]
+  }
+}

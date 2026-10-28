@@ -11,7 +11,7 @@
 
 ## 2. Контейнер GTM
 
-ID контейнера впиши в `site/assets/config.js` (`gtmId`).
+Контейнер: `GTM-MJXVW5MB`, уже вписан в `site/assets/config.js`. Всё ниже можно не делать руками: импортируй [`container.json`](container.json) через Admin → Import Container (вариант Merge).
 
 ### Переменные
 
