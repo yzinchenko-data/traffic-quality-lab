@@ -15,8 +15,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 import numpy as np
@@ -37,9 +38,34 @@ def _ts(value) -> pd.Timestamp:
     return pd.Timestamp(value.isoformat() if isinstance(value, date) else value)
 
 
-def load_config(path: str | Path) -> dict:
+def load_config(path: str | Path, end: str | None = None) -> dict:
+    """Читает сценарии. end (или переменная TQL_END) сдвигает весь календарь кампании
+    так, чтобы она кончалась этой датой: today, yesterday или YYYY-MM-DD.
+    Нужно для живого режима: бот пишет визиты в Метрику на дату запуска."""
     with open(path, encoding="utf-8") as f:
-        return yaml.safe_load(f)
+        cfg = yaml.safe_load(f)
+    end = end or os.environ.get("TQL_END")
+    return shift_calendar(cfg, resolve_date(end)) if end else cfg
+
+
+def resolve_date(value: str) -> date:
+    today = date.today()
+    return {"today": today, "yesterday": today - timedelta(days=1)}.get(value) or date.fromisoformat(value)
+
+
+def shift_calendar(cfg: dict, end: date) -> dict:
+    # Сдвиг на целое число недель: дни недели не меняются, а с ними и выходные,
+    # поэтому вшитые аномалии находятся так же, как в исходном календаре.
+    # Кампания кончается в последний день не позже end с тем же днём недели.
+    delta = timedelta(weeks=(end - _ts(cfg["end"]).date()).days // 7)
+    out = dict(cfg)
+    for key in ("start", "end"):
+        out[key] = _ts(cfg[key]).date() + delta
+    out["anomalies"] = [
+        {k: (_ts(v).date() + delta if k in ("start", "end", "date") else v) for k, v in a.items()}
+        for a in cfg.get("anomalies", [])
+    ]
+    return out
 
 
 def _anomalies(cfg: dict, kind: str) -> list[dict]:

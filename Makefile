@@ -1,4 +1,4 @@
-.PHONY: install data report test lint site clean
+.PHONY: install data report test lint site app clean
 
 install:
 	pip install -r requirements-dev.txt
@@ -20,3 +20,6 @@ site:
 
 clean:
 	rm -rf data reports .pytest_cache
+
+app:
+	streamlit run app/streamlit_app.py

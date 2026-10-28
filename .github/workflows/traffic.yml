@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       date:
-        description: "Дата из плана кампании (YYYY-MM-DD)"
+        description: "Дата из плана: today (календарь сдвигается к сегодня) или YYYY-MM-DD"
         required: true
-        default: "2026-09-12"
+        default: "today"
       scale:
         description: "Доля визитов плана"
         required: true
@@ -29,6 +29,8 @@ jobs:
       - run: pip install -r requirements.txt playwright
       - run: python -m playwright install --with-deps chromium
       - run: python -m src.simulate.campaign --out data/raw
+        env:
+          TQL_END: ${{ inputs.date == 'today' && 'today' || '' }}
       - name: Play visits
         env:
           SITE_URL: ${{ vars.SITE_URL }}

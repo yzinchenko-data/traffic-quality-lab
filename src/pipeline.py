@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -95,7 +96,7 @@ def run(config: Path, raw_dir: Path, out_dir: Path, source: str = "offline", she
             raise SystemExit(
                 f"Метрика вернула 0 визитов за {cfg['start']}–{cfg['end']}. "
                 "Бот пишет визиты на дату запуска, а не на дату из плана: "
-                "сдвинь start/end в scenarios.yaml или запусти без --source api."
+                "запусти с --end today (или сдвинь start/end в scenarios.yaml)."
             )
         visits.to_csv(raw_dir / "metrika_visits.csv", index=False)
 
@@ -114,6 +115,7 @@ def run(config: Path, raw_dir: Path, out_dir: Path, source: str = "offline", she
     )
     # CSV для Apps Script: лист собирается из них в Google Sheets без ключей сервисного аккаунта
     sheet_tables.write_csv(res, ROOT / "exports" / "sheets")
+    sheet_tables.write_datalens(res, ROOT / "datalens")
     if sheets:
         from src.report import sheets as gsheets
 
@@ -128,7 +130,11 @@ def main() -> None:
     parser.add_argument("--out", type=Path, default=ROOT / "reports")
     parser.add_argument("--source", choices=["offline", "api"], default="offline")
     parser.add_argument("--sheets", action="store_true")
+    parser.add_argument("--end", help="сдвинуть кампанию, чтобы она кончалась этой датой: today, yesterday, YYYY-MM-DD")
     args = parser.parse_args()
+    if args.end:
+        # через переменную окружения: её читают и симулятор, и анализ
+        os.environ["TQL_END"] = args.end
 
     res = run(args.config, args.raw, args.out, args.source, args.sheets)
     print(f"Отчёт: {args.out / 'traffic_quality_report.xlsx'}")

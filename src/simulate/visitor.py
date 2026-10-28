@@ -18,6 +18,7 @@ import argparse
 import random
 import time
 from dataclasses import dataclass
+from datetime import date
 from typing import TYPE_CHECKING
 from urllib.parse import urlencode
 
@@ -111,12 +112,19 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--site", required=True)
     parser.add_argument("--plan", default="data/raw/visit_plan.csv")
-    parser.add_argument("--date", required=True, help="дата из плана, YYYY-MM-DD")
+    parser.add_argument("--date", default="today", help="дата из плана: YYYY-MM-DD или today")
     parser.add_argument("--scale", type=float, default=0.05, help="доля визитов плана, которую проигрываем")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--headed", action="store_true")
     args = parser.parse_args()
-    n = run(args.site, args.plan, args.date, args.scale, args.seed, headless=not args.headed)
+    plan_date = args.date
+    if plan_date == "today":
+        # Визиты в Метрике лягут на сегодня. Берём из плана день с тем же днём недели
+        # не позже сегодня: календарь кампании сдвигается на целые недели.
+        dates = pd.to_datetime(pd.read_csv(args.plan, usecols=["date"])["date"]).dt.date.unique()
+        today = date.today()
+        plan_date = max(d for d in dates if d <= today and (today - d).days % 7 == 0).isoformat()
+    n = run(args.site, args.plan, plan_date, args.scale, args.seed, headless=not args.headed)
     print(f"Сыграно визитов: {n}")
 
 

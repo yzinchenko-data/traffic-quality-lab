@@ -33,3 +33,9 @@ def truth(raw_dir) -> dict:
 @pytest.fixture(scope="session")
 def res(raw_dir, cfg, truth):
     return analyze(raw_dir, cfg, truth)
+
+
+def missing_date(cfg: dict) -> str:
+    """Дата, которую симулятор выкидывает из выгрузки Верификатора."""
+    a = next(a for a in cfg["anomalies"] if a["type"] == "missing_date")
+    return str(a["date"])

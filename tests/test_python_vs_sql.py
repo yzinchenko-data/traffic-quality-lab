@@ -4,6 +4,8 @@
 import pandas as pd
 import pytest
 
+from tests.conftest import missing_date
+
 KEYS = ["date", "ssp", "placement"]
 COUNTS = [
     "dsp_clicks",
@@ -88,6 +90,6 @@ def test_windows_and_goals(res):
     assert len(res.goals_over) == len(res.sql["goals_over_visits"])
 
 
-def test_sql_checks(res):
+def test_sql_checks(res, cfg):
     assert res.sql["check_verifier_total"].empty
-    assert [str(d)[:10] for d in res.sql["check_missing_dates"]["date"]] == ["2026-09-08"]
+    assert [str(d)[:10] for d in res.sql["check_missing_dates"]["date"]] == [missing_date(cfg)]

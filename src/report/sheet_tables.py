@@ -11,7 +11,17 @@ from pathlib import Path
 
 import pandas as pd
 
-DAILY_SSP_COLS = ["date", "ssp", "dsp_clicks", "verifier_total", "visits", "reach_verifier", "dsp_vs_verifier_pct", "z", "flag"]
+DAILY_SSP_COLS = [
+    "date",
+    "ssp",
+    "dsp_clicks",
+    "verifier_total",
+    "visits",
+    "reach_verifier",
+    "dsp_vs_verifier_pct",
+    "z",
+    "flag",
+]
 GIVT_COLS = ["date", "placement", "verifier_total", "givt", "givt_share", "z", "flag"]
 
 # имя файла → имя листа
@@ -26,7 +36,9 @@ SHEETS = {
 
 def build(res) -> dict[str, pd.DataFrame]:
     daily = res.daily_ssp.merge(res.reach_flags[["date", "ssp", "z", "flag"]], on=["date", "ssp"])[DAILY_SSP_COLS]
-    givt = res.daily_placement.merge(res.givt_flags[["date", "placement", "z", "flag"]], on=["date", "placement"])[GIVT_COLS]
+    givt = res.daily_placement.merge(res.givt_flags[["date", "placement", "z", "flag"]], on=["date", "placement"])[
+        GIVT_COLS
+    ]
     tables = {
         "summary": res.summary,
         "daily_ssp": daily,
@@ -50,6 +62,25 @@ def write_csv(res, out_dir: Path) -> list[Path]:
     out_dir.mkdir(parents=True, exist_ok=True)
     paths = []
     for name, df in build(res).items():
+        path = out_dir / f"{name}.csv"
+        df.to_csv(path, index=False)
+        paths.append(path)
+    return paths
+
+
+def write_datalens(res, out_dir: Path) -> list[Path]:
+    """CSV-источники дашборда DataLens: витрина, дни по SSP и площадкам с флагами, периоды."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    tables = {
+        "mart_daily": res.mart,
+        "daily_ssp": res.daily_ssp.merge(res.reach_flags[["date", "ssp", "z", "trend", "flag"]], on=["date", "ssp"]),
+        "daily_placement": res.daily_placement.merge(
+            res.givt_flags[["date", "placement", "z", "flag"]], on=["date", "placement"]
+        ),
+        "anomaly_windows": res.windows,
+    }
+    paths = []
+    for name, df in tables.items():
         path = out_dir / f"{name}.csv"
         df.to_csv(path, index=False)
         paths.append(path)

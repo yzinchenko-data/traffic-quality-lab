@@ -5,6 +5,8 @@
 [![CI](https://github.com/yzinchenko-data/traffic-quality-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/yzinchenko-data/traffic-quality-lab/actions/workflows/ci.yml)
 ![data](https://img.shields.io/badge/data-100%25%20synthetic-D97706)
 
+[English version](README.en.md) · [Кейс: разбор задачи](docs/case.md)
+
 Синтетический стенд для анализа качества рекламного трафика: **DSP → Верификатор → Метрика → отчёт**.
 
 Сайт, GTM-события, визиты и выгрузки DSP и Верификатора генерируются, а в данные заранее вшиты аномалии. Пайплайн чистит данные, считает доходимость и долю GIVT, ищет аномалии во временных рядах и собирает отчёт с подсветкой. Каждая метрика посчитана дважды, в pandas и в SQL. Тесты проверяют, что оба расчёта совпадают и что найдено ровно то, что было вшито.
@@ -52,7 +54,8 @@ git clone https://github.com/yzinchenko-data/traffic-quality-lab.git
 cd traffic-quality-lab
 pip install -r requirements-dev.txt
 make report   # симуляция → эмулятор Метрики → анализ → отчёт
-make test     # 28 тестов
+make test     # 33 теста
+make app      # Streamlit: порог robust z и сила аномалий на ползунках
 ```
 
 Ключи и доступы для офлайн-режима не нужны. После запуска:
@@ -87,6 +90,14 @@ make test     # 28 тестов
 ## Дашборд DataLens
 
 [Traffic Quality Lab — качество трафика](https://datalens.yandex/5eh8tse706g0o): доходимость от Верификатора по SSP, расхождение DSP и Верификатора по дням, доля GIVT по площадкам. Источник — CSV из папки [`datalens/`](datalens/), их выгружает пайплайн.
+
+## Ежедневное обновление
+
+Workflow [`refresh.yml`](.github/workflows/refresh.yml) каждый день в 08:00 МСК пересобирает отчёт и коммитит свежие CSV в `exports/sheets/` и `datalens/`. Календарь кампании сдвигается так, чтобы она кончалась вчера (`--end yesterday`). Сдвиг идёт на целые недели: выходные остаются на тех же днях недели, и вшитые аномалии находятся так же, как в исходном сентябре. Таблица и DataLens подхватывают новые файлы сами.
+
+## Демо на Streamlit
+
+`make app` открывает [`app/streamlit_app.py`](app/streamlit_app.py): ползунками меняются порог robust z, глубина провала доходимости и доля GIVT, а графики и найденные периоды пересчитываются сразу. Видно, где детектор начинает пропускать аномалии и где ловит лишние дни.
 
 ## Живой сайт и счётчик
 
@@ -124,18 +135,19 @@ GROUP BY kind, slice, grp;
 | `test_cleaning.py` | Нормализацию UTM, отчёт о чистке, уникальность ключей витрины |
 | `test_python_vs_sql.py` | pandas и DuckDB дают одни и те же суммы, доли, флаги и периоды |
 | `test_ground_truth.py` | Найдены все вшитые аномалии, лишних нет, каждый провал доходимости объяснён |
+| `test_sheet_tables.py` | Колонки CSV для Sheets сходятся с оформлением в Apps Script |
 | `test_visitor_plan.py` | Бот проигрывает план с нужным числом целей и UTM |
 
 ## Живой режим: сайт, GTM и настоящие визиты
 
 1. Включить GitHub Pages (Settings → Pages → GitHub Actions): workflow [`pages.yml`](.github/workflows/pages.yml) выложит `site/`.
 2. Создать счётчик Метрики и контейнер GTM по [`gtm/SETUP.md`](gtm/SETUP.md), вписать ID контейнера в `site/assets/config.js`.
-3. В Settings → Variables добавить `SITE_URL` и запустить вручную [`traffic.yml`](.github/workflows/traffic.yml): бот проиграет 5% плана за выбранную дату.
+3. В Settings → Variables добавить `SITE_URL` и запустить вручную [`traffic.yml`](.github/workflows/traffic.yml): бот проиграет 5% плана за сегодня (`today`) или за выбранную дату.
 4. Заполнить `.env` по `.env.example` и запустить с настоящими данными:
 
 ```bash
-python -m src.pipeline --source api            # визиты из Метрики
-python -m src.pipeline --source api --sheets   # плюс выгрузка в Google Sheets
+python -m src.pipeline --source api --end today            # визиты из Метрики
+python -m src.pipeline --source api --end today --sheets   # плюс выгрузка в Google Sheets
 ```
 
 Визиты бота идут из headless-браузера с IP датацентра, и Метрика часть из них отметит как роботов. Это не прячется: роботность считается в отчёте отдельной колонкой.
@@ -147,7 +159,8 @@ traffic-quality-lab/
 ├── scenarios.yaml          # план кампании и вшитые аномалии
 ├── site/                   # витрина Polka (HTML/CSS/JS, события dataLayer)
 ├── gtm/SETUP.md            # теги, триггеры и переменные GTM
-├── apps_script/            # выгрузка Метрики в Google Sheets
+├── apps_script/            # отчёт и выгрузка Метрики в Google Sheets
+├── app/                    # демо на Streamlit
 ├── src/
 │   ├── simulate/           # симулятор кампании, бот-посетитель
 │   ├── extract/            # Metrika API, офлайн-эмулятор, общая схема

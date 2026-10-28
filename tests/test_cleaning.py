@@ -1,6 +1,7 @@
 import pytest
 
 from src.clean.loaders import normalize_utm
+from tests.conftest import missing_date
 
 
 @pytest.mark.parametrize(
@@ -18,10 +19,10 @@ def test_normalize_utm(raw, expected):
     assert normalize_utm(raw) == expected
 
 
-def test_cleaning_report(res):
+def test_cleaning_report(res, cfg):
     report = res.cleaning.to_frame().set_index("issue")
     assert report.loc["полные дубли строк", "rows"] == 6
-    assert report.loc["пропущенные даты", "detail"] == "2026-09-08"
+    assert report.loc["пропущенные даты", "detail"] == missing_date(cfg)
     assert report.loc["UTM-метки в разном написании", "rows"] > 0
     # Сверка с «Итого» прошла: строк о расхождении нет
     assert not report.index.str.startswith("расхождение").any()
