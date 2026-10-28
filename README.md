@@ -78,6 +78,14 @@ make test     # 28 тестов
 
 ![Расхождение DSP и Верификатора](docs/img/dsp_vs_verifier.png)
 
+## Дашборд DataLens
+
+[Traffic Quality Lab — качество трафика](https://datalens.ru/5eh8tse706g0o-traffic-quality-lab-kachestvo-trafika): доходимость от Верификатора по SSP, расхождение DSP и Верификатора по дням, доля GIVT по площадкам. Источник — CSV из папки [`datalens/`](datalens/), их выгружает пайплайн.
+
+## Живой сайт и счётчик
+
+Витрина: https://yzinchenko-data.github.io/traffic-quality-lab/. Подключены контейнер GTM `GTM-MJXVW5MB` и счётчик Метрики с целями `add_to_cart`, `form_submit`, `scroll_50`, `click_phone`; настройки контейнера лежат в [`gtm/container.json`](gtm/container.json).
+
 ## Как считается
 
 **Доходимость от Верификатора** = визиты / «Кликов всего с учётом IVT». В числителе только визиты за дни, по которым есть выгрузка Верификатора.
