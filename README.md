@@ -80,7 +80,7 @@ make test     # 28 тестов
 
 ## Дашборд DataLens
 
-[Traffic Quality Lab — качество трафика](https://datalens.ru/5eh8tse706g0o-traffic-quality-lab-kachestvo-trafika): доходимость от Верификатора по SSP, расхождение DSP и Верификатора по дням, доля GIVT по площадкам. Источник — CSV из папки [`datalens/`](datalens/), их выгружает пайплайн.
+[Traffic Quality Lab — качество трафика](https://datalens.yandex/5eh8tse706g0o): доходимость от Верификатора по SSP, расхождение DSP и Верификатора по дням, доля GIVT по площадкам. Источник — CSV из папки [`datalens/`](datalens/), их выгружает пайплайн.
 
 ## Живой сайт и счётчик
 
